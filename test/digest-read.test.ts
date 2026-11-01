@@ -8,6 +8,7 @@ describe('readNight', () => {
   it('reads 2026-10-28: 5 jobs, 1 bad line', () => {
     const night = readNight('runs', '2026-10-28');
     expect(night?.badLines).toBe(1);
+    expect(night?.counts).toEqual({ ok: 10, retry: 4, fail: 1 });
     expect(night?.rows.map((r) => r.job)).toEqual([
       'digest/render',
       'fixtures/refresh',
@@ -40,7 +41,7 @@ describe('readNight', () => {
   it('returns no rows for an empty file', () => {
     const dir = mkdtempSync(join(tmpdir(), 'rig-'));
     writeFileSync(join(dir, '2026-01-01.jsonl'), '');
-    expect(readNight(dir, '2026-01-01')).toEqual({ night: '2026-01-01', rows: [], badLines: 0 });
+    expect(readNight(dir, '2026-01-01')).toEqual({ night: '2026-01-01', rows: [], counts: { ok: 0, retry: 0, fail: 0 }, badLines: 0 });
   });
 
   it('counts lines that parse but have the wrong shape', () => {

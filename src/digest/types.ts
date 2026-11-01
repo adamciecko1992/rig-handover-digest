@@ -15,6 +15,8 @@ export type DigestRow = {
 export type Night = {
   night: string;
   rows: DigestRow[];
+  // Log lines per status, across all jobs.
+  counts: Record<RunStatus, number>;
   badLines: number;
 };
 
